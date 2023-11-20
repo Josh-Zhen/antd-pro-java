@@ -1,0 +1,35 @@
+server:
+  port: 6688
+
+spring:
+  application:
+    name: antd-pro-java
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    ## mysql 5.X版本请使用下的连接配置
+    url: jdbc:mysql://localhost:3306/antd-pro?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    ## mysql 8.X版本请使用下的连接配置
+    #    url: jdbc:mysql://localhost:3306/antd-pro?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    # 请自行修改数据库账户名以及密码
+    username: root
+    password: qwe123
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 60000
+      connection-timeout: 60000
+      validation-timeout: 3000
+      login-timeout: 5
+      max-lifetime: 60000
+      read-only: false
+
+mybatis-plus:
+  mapper-locations: classpath*:**/mapper/*/*.xml
+  global-config:
+    db-config:
+      id-type: AUTO
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-aliases-package: com.antd.*
