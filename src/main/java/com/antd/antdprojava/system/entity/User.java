@@ -68,4 +68,16 @@ public class User implements Serializable {
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime updateDate;
 
+    /**
+     * 用户注册构造器
+     *
+     * @param name     用户名
+     * @param password 密码
+     */
+    public User(String name, String password) {
+        this.userName = name;
+        this.password = password;
+        this.createDate = LocalDateTime.now();
+    }
+
 }

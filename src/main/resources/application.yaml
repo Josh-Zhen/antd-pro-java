@@ -7,7 +7,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     ## mysql 5.X版本请使用下的连接配置
-    url: jdbc:mysql://localhost:3306/antd-pro?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3307/antd-pro?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     ## mysql 8.X版本请使用下的连接配置
     #    url: jdbc:mysql://localhost:3306/antd-pro?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     # 请自行修改数据库账户名以及密码
@@ -22,6 +22,12 @@ spring:
       login-timeout: 5
       max-lifetime: 60000
       read-only: false
+  data:
+    redis:
+      database: 1
+      host: 127.0.0.1
+      port: 6379
+      password: qwe123
 
 mybatis-plus:
   mapper-locations: classpath*:**/mapper/*/*.xml
@@ -33,3 +39,26 @@ mybatis-plus:
     cache-enabled: false
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   type-aliases-package: com.antd.*
+
+security:
+  properties:
+    # 静态资源放行
+    permit-static:
+      - /*.html
+      - /**/*.html
+      - /**/*.css
+      - /**/*.js
+      - /**/*.png
+      - /**/*.jpg
+      - /**/*.ttf
+      - /**/*.woff
+      - /**/*.wav
+      - /**/*.gif
+      - /swagger-ui.html
+
+    # 方法放行
+    permit-method:
+      - login
+      - register
+      - logout
+      - getCode/{number}

@@ -35,7 +35,7 @@ public class UserInfoVO {
     private String avatar;
 
     /**
-     * 权限
+     * 角色
      */
     private ArrayList<String> roles;
 

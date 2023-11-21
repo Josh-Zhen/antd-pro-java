@@ -1,5 +1,6 @@
 package com.antd.antdprojava.common.response;
 
+import com.antd.antdprojava.common.exception.base.AbstractBaseExceptionEnum;
 import lombok.Data;
 
 import java.io.Serial;
@@ -89,7 +90,7 @@ public class Result<T> implements Serializable {
     /**
      * 失败
      *
-     * @param <T> 不带实体
+     * @param errorMsg 异常信息
      * @return 错误内容响应
      */
     public static <T> Result<T> fail(String errorMsg) {
@@ -103,7 +104,8 @@ public class Result<T> implements Serializable {
     /**
      * 失败
      *
-     * @param <T> 不带实体
+     * @param code 编码
+     * @param msg  消息
      * @return 带异常编码和错误内容响应
      */
     public static <T> Result<T> fail(Integer code, String msg) {
@@ -111,6 +113,20 @@ public class Result<T> implements Serializable {
         result.setSuccess(false);
         result.setCode(code);
         result.setMessage(msg);
+        return result;
+    }
+
+    /**
+     * 失败
+     *
+     * @param baseExceptionEnum 自定义异常
+     * @return 结果
+     */
+    public static <T> Result<T> fail(AbstractBaseExceptionEnum baseExceptionEnum) {
+        Result<T> result = new Result<>();
+        result.setSuccess(false);
+        result.setCode(baseExceptionEnum.getCode());
+        result.setMessage(baseExceptionEnum.getMessage());
         return result;
     }
 

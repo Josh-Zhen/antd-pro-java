@@ -2,17 +2,24 @@ package com.antd.antdprojava.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
+import com.antd.antdprojava.common.exception.BusinessException;
 import com.antd.antdprojava.common.page.PageFactory;
 import com.antd.antdprojava.common.page.PageResult;
+import com.antd.antdprojava.common.security.enums.AuthExceptionEnum;
 import com.antd.antdprojava.system.entity.User;
+import com.antd.antdprojava.system.entity.UserRole;
+import com.antd.antdprojava.system.entity.dto.RegisterDTO;
 import com.antd.antdprojava.system.entity.dto.UserLoginDTO;
 import com.antd.antdprojava.system.entity.vo.UserInfoToken;
 import com.antd.antdprojava.system.entity.vo.UserInfoVO;
 import com.antd.antdprojava.system.mapper.UserMapper;
+import com.antd.antdprojava.system.service.UserRoleService;
 import com.antd.antdprojava.system.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,6 +35,9 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     /**
      * 登录
@@ -50,6 +60,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Boolean logout() {
         return true;
+    }
+
+    /**
+     * 注册
+     *
+     * @param dto 注册实体
+     * @return 结果
+     */
+    @Override
+    public Boolean register(RegisterDTO dto) {
+        // 用户是否存在
+        LambdaQueryWrapper<User> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(User::getUserName, dto.getUserName());
+        if (ObjectUtil.isNotEmpty(this.getOne(queryWrapper))) {
+            throw new BusinessException(AuthExceptionEnum.USER_ALREADY_EXISTS);
+        }
+
+        // 加密密码
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        User user = new User(dto.getUserName(), encoder.encode(dto.getPassword()));
+        try {
+            this.save(user);
+            return userRoleService.save(new UserRole(user.getId()));
+        } catch (Exception e) {
+            throw new BusinessException(AuthExceptionEnum.USER_REGISTRATION_FAILED);
+        }
     }
 
     /**

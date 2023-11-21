@@ -2,6 +2,7 @@ package com.antd.antdprojava.system.service;
 
 import com.antd.antdprojava.common.page.PageResult;
 import com.antd.antdprojava.system.entity.User;
+import com.antd.antdprojava.system.entity.dto.RegisterDTO;
 import com.antd.antdprojava.system.entity.dto.UserLoginDTO;
 import com.antd.antdprojava.system.entity.vo.UserInfoToken;
 import com.antd.antdprojava.system.entity.vo.UserInfoVO;
@@ -32,6 +33,14 @@ public interface UserService extends IService<User> {
      * @return 结果
      */
     Boolean logout();
+
+    /**
+     * 注册
+     *
+     * @param dto 注册实体
+     * @return 结果
+     */
+    Boolean register(RegisterDTO dto);
 
     /**
      * 获取用户详情
