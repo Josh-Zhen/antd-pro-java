@@ -23,7 +23,7 @@ public class PerAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.getWriter().println(JSONUtil.toJsonStr(Result.fail(AuthExceptionEnum.PERM_INVALID_ERROR)));
     }

@@ -54,6 +54,7 @@ public class JwtTokenService {
     /**
      * 生成token
      *
+     * @param user 用户信息
      * @return token
      */
     public static String createToken(TokenInfo user) {
@@ -63,6 +64,8 @@ public class JwtTokenService {
     /**
      * 生成token
      *
+     * @param user    用户信息
+     * @param expTime 超时时间
      * @return token
      */
     public static String createToken(TokenInfo user, Long expTime) {
@@ -70,7 +73,9 @@ public class JwtTokenService {
             expTime = EXPIRATION;
         }
         return JWT.create()
-                // 过期时间
+                // 开始时间
+                .setIssuedAt(new Date())
+                // 有效时间
                 .setExpiresAt(new Date(System.currentTimeMillis() + expTime * 1000))
                 // 内容
                 .setPayload(PAYLOAD_FEATURE, user)

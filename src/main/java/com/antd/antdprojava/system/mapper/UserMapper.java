@@ -1,7 +1,7 @@
 package com.antd.antdprojava.system.mapper;
 
+import com.antd.antdprojava.common.security.entity.UserInfo;
 import com.antd.antdprojava.system.entity.User;
-import com.antd.antdprojava.system.entity.vo.UserInfoVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,10 +16,10 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper extends BaseMapper<User> {
 
     /**
-     * 获取用户详情
+     * 根据用户名查询用户
      *
-     * @param id id
-     * @return 用户
+     * @param username 用户名
+     * @return 用户信息
      */
-    UserInfoVO getUserInfo(Long id);
+    UserInfo getUserInfo(String username);
 }

@@ -84,7 +84,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      */
     @Override
     public Boolean updateRole(Role role) {
-        role.setUpdateDate(LocalDateTime.now());
         return this.updateById(role);
     }
 

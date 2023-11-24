@@ -1,23 +1,23 @@
 package com.antd.antdprojava.common.security;
 
-import com.antd.antdprojava.common.redis.RedisService;
 import com.antd.antdprojava.common.security.entity.AuthReleaseProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -37,10 +37,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final AuthReleaseProperties authReleaseProperties;
-    @Lazy
-    private final AuthenticationManager authenticationManager;
-    private final RedisService redisService;
     private final UserDetailsService userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     /**
      * 过滤器
@@ -66,25 +64,20 @@ public class SecurityConfig {
         );
 
         // jwt配置
-        http.addFilter(new JwtAuthenticationFilter(authenticationManager, redisService));
-
-//        http.oauth2ResourceServer(oauth2 -> oauth2
-//                .jwt(jwtConfigurer -> jwtConfigurer
-//                        .jwtAuthenticationConverter(jwt -> {
-//                            Map<String, Collection<String>> realmAccess = jwt.getClaim("realm_access");
-//                            Collection<String> roles = realmAccess.get("roles");
-//                            List<SimpleGrantedAuthority> grantedAuthorities = roles.stream()
-//                                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-//                                    .toList();
-//                            return new JwtAuthenticationToken(jwt, grantedAuthorities);
-//                        })
-//                )
-//        );
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         // 异常处理
         http.exceptionHandling(exceptionHandling -> exceptionHandling
                 .authenticationEntryPoint(new UserAuthenticationEntryPoint())
                 .accessDeniedHandler(new PerAccessDeniedHandler())
+        );
+
+        // 自定义登出
+        http.logout(logout -> logout
+                .deleteCookies("remove")
+                .invalidateHttpSession(true)
+                .logoutUrl("/logout")
+                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
         );
 
         http.userDetailsService(userDetailsService);

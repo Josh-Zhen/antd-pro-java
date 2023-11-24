@@ -45,15 +45,14 @@ security:
     # 静态资源放行
     permit-static:
       - /*.html
-      - /**/*.html
-      - /**/*.css
-      - /**/*.js
-      - /**/*.png
-      - /**/*.jpg
-      - /**/*.ttf
-      - /**/*.woff
-      - /**/*.wav
-      - /**/*.gif
+      - /**.css
+      - /**.js
+      - /**.png
+      - /**.jpg
+      - /**.ttf
+      - /**.woff
+      - /**.wav
+      - /**.gif
       - /swagger-ui.html
 
     # 方法放行

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
+ * 用户信息详情
+ *
  * @author Joshua
  * @version 1.0
  * @date 21/11/2023 16:06
@@ -29,6 +31,11 @@ public class UserInfo implements UserDetails {
     private String username;
 
     /**
+     * 昵称
+     */
+    private String nickName;
+
+    /**
      * 登录密码
      */
     private String password;
@@ -36,7 +43,17 @@ public class UserInfo implements UserDetails {
     /**
      * 状态 0:禁用，1:正常
      */
-    private Boolean status;
+    private Boolean state;
+
+    /**
+     * 手机号码
+     */
+    private String number;
+
+    /**
+     * 头像
+     */
+    private String avatar;
 
     /**
      * 角色
@@ -47,27 +64,27 @@ public class UserInfo implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         // 将权限列表放进集合内
-        roles.forEach(permission -> grantedAuthorities.add(new SimpleGrantedAuthority(permission)));
+        roles.forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role)));
         return grantedAuthorities;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return status;
+        return state;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return status;
+        return state;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return status;
+        return state;
     }
 
     @Override
     public boolean isEnabled() {
-        return status;
+        return state;
     }
 }

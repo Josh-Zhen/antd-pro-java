@@ -45,10 +45,9 @@ public interface UserService extends IService<User> {
     /**
      * 获取用户详情
      *
-     * @param id id
      * @return 用户
      */
-    UserInfoVO getUserInfo(Long id);
+    UserInfoVO getUserInfo();
 
     /**
      * 分页查询用户

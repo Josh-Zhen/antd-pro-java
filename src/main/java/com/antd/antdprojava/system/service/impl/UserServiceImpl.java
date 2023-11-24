@@ -2,10 +2,17 @@ package com.antd.antdprojava.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
+import com.antd.antdprojava.common.constant.CharacterConstant;
 import com.antd.antdprojava.common.exception.BusinessException;
 import com.antd.antdprojava.common.page.PageFactory;
 import com.antd.antdprojava.common.page.PageResult;
+import com.antd.antdprojava.common.redis.RedisService;
+import com.antd.antdprojava.common.security.JwtTokenService;
+import com.antd.antdprojava.common.security.SecurityUtils;
+import com.antd.antdprojava.common.security.entity.TokenInfo;
+import com.antd.antdprojava.common.security.entity.UserInfo;
 import com.antd.antdprojava.common.security.enums.AuthExceptionEnum;
+import com.antd.antdprojava.system.constant.BusinessConstant;
 import com.antd.antdprojava.system.entity.User;
 import com.antd.antdprojava.system.entity.UserRole;
 import com.antd.antdprojava.system.entity.dto.RegisterDTO;
@@ -18,7 +25,12 @@ import com.antd.antdprojava.system.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,10 +46,12 @@ import java.util.List;
  * @date 19/11/2023 01:16
  */
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
-    @Autowired
-    private UserRoleService userRoleService;
+    private final AuthenticationManager authenticationManager;
+    private final UserRoleService userRoleService;
+    private final RedisService redisService;
 
     /**
      * 登录
@@ -47,8 +61,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public UserInfoToken login(UserLoginDTO dto) {
-        Long userId = 1L;
-        String jwtToken = "aaaaaaaaaaa";
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
+        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
+
+        // 从认证中获取用户信息
+        UserInfo user = (UserInfo) authenticate.getPrincipal();
+        user.setPassword(CharacterConstant.EMPTY);
+        // 从创建token
+        String username = user.getUsername();
+        Long userId = user.getId();
+        String jwtToken = JwtTokenService.createToken(new TokenInfo(userId, username));
+        // 缓存到redis
+        redisService.setCacheObject(BusinessConstant.USER_CACHE + username, user);
         return new UserInfoToken(userId, jwtToken);
     }
 
@@ -59,6 +83,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public Boolean logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserInfo userInfo = (UserInfo) authentication.getPrincipal();
+        redisService.deleteObject(BusinessConstant.USER_CACHE + userInfo.getUsername());
         return true;
     }
 
@@ -91,12 +118,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 获取用户详情
      *
-     * @param id id
      * @return 用户
      */
     @Override
-    public UserInfoVO getUserInfo(Long id) {
-        return baseMapper.getUserInfo(id);
+    public UserInfoVO getUserInfo() {
+        UserInfoVO userVo = new UserInfoVO();
+        UserInfo userInfo = baseMapper.getUserInfo(SecurityUtils.me().getUserName());
+        BeanUtils.copyProperties(userInfo, userVo);
+        return userVo;
     }
 
     /**
@@ -157,7 +186,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public Boolean updateUser(User user) {
-        user.setUpdateDate(LocalDateTime.now());
         return this.updateById(user);
     }
 

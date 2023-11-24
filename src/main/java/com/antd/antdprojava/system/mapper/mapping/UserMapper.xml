@@ -2,23 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.antd.antdprojava.system.mapper.UserMapper">
 
-    <resultMap id="userInfoResultMap" type="com.antd.antdprojava.system.entity.vo.UserInfoVO">
-        <result property="userName" column="user_name"/>
+    <resultMap id="userInfo" type="com.antd.antdprojava.common.security.entity.UserInfo">
+        <id property="id" column="id"/>
+        <result property="username" column="user_name"/>
+        <result property="password" column="password"/>
+        <result property="state" column="state"/>
         <result property="number" column="number"/>
         <result property="nickName" column="nick_name"/>
         <result property="avatar" column="avatar"/>
         <collection property="roles" ofType="java.lang.String">
-            <result column="role_key"/>
+            <constructor>
+                <arg column="role_key"/>
+            </constructor>
         </collection>
     </resultMap>
 
-    <select id="getUserInfo" resultMap="userInfoResultMap">
-        SELECT u.user_name, u.number, u.nick_name, u.avatar, r.role_key
+    <select id="getUserInfo" resultMap="userInfo">
+        SELECT u.id, u.user_name, u.password, u.state, u.number, u.nick_name, u.avatar, r.role_key
         FROM user u
         LEFT JOIN user_role ur ON u.id = ur.user_id
         LEFT JOIN role r ON ur.role_id = r.id
         <where>
-            u.id = #{id}
+            u.user_name = #{username}
         </where>
     </select>
 

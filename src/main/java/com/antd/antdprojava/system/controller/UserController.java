@@ -31,8 +31,7 @@ public class UserController {
      */
     @GetMapping("/info")
     public Result<UserInfoVO> info() {
-        Long id = 1L;
-        return Result.success(userService.getUserInfo(id));
+        return Result.success(userService.getUserInfo());
     }
 
     /**

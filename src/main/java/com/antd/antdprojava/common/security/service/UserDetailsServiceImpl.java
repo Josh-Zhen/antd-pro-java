@@ -1,7 +1,11 @@
 package com.antd.antdprojava.common.security.service;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.antd.antdprojava.common.exception.BusinessException;
+import com.antd.antdprojava.common.security.entity.UserInfo;
+import com.antd.antdprojava.common.security.enums.AuthExceptionEnum;
 import com.antd.antdprojava.system.mapper.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,15 +19,23 @@ import org.springframework.stereotype.Service;
  * @date 21/11/2023 16:16
  */
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        return null;
+        // 获取用户详情
+        UserInfo userInfo = userMapper.getUserInfo(username);
+        System.out.println(userInfo);
+        if (ObjectUtil.isEmpty(userInfo)) {
+            throw new BusinessException(AuthExceptionEnum.ACCOUNT_PWD_ERROR);
+        }
+        if (!userInfo.isEnabled()) {
+            throw new BusinessException(AuthExceptionEnum.ACCOUNT_INVALID_ERROR);
+        }
+        return userInfo;
     }
 
 }

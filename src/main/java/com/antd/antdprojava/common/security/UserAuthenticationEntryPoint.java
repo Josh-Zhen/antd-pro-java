@@ -23,7 +23,7 @@ public class UserAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.getWriter().println(JSONUtil.toJsonStr(Result.fail(AuthExceptionEnum.NOT_LOGGED_IN)));
     }
