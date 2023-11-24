@@ -7,7 +7,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     ## mysql 5.X版本请使用下的连接配置
-    url: jdbc:mysql://localhost:3307/antd-pro?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/antd-pro?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     ## mysql 8.X版本请使用下的连接配置
     #    url: jdbc:mysql://localhost:3306/antd-pro?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     # 请自行修改数据库账户名以及密码
@@ -58,6 +58,6 @@ security:
     # 方法放行
     permit-method:
       - login
-      - register
       - logout
+      - register
       - getCode/{number}
