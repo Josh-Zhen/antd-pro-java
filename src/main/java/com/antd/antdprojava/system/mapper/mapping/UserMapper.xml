@@ -18,12 +18,21 @@
     </resultMap>
 
     <select id="getUserInfo" resultMap="userInfo">
-        SELECT u.id, u.user_name, u.password, u.state, u.number, u.nick_name, u.avatar, r.role_key
-        FROM user u
-        LEFT JOIN user_role ur ON u.id = ur.user_id
-        LEFT JOIN role r ON ur.role_id = r.id
+        SELECT
+        u.id,
+        u.`user_name`,
+        u.`password`,
+        u.`state`,
+        u.`number`,
+        u.`nick_name`,
+        u.`avatar`,
+        r.`role_key`
+        FROM
+        USER `u`
+        LEFT JOIN `user_role` ur ON u.id = ur.user_id
+        LEFT JOIN `role` r ON ur.role_id = r.id
         <where>
-            u.user_name = #{username}
+            u.`user_name` = #{username}
         </where>
     </select>
 

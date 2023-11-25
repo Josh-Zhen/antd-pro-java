@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 用户实体
+ * 用户实体类
  *
  * @author Joshua
  * @version 1.0

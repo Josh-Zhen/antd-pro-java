@@ -9,37 +9,52 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 角色实体类
+ * 系统字典值实体类（小类）
  *
  * @author Joshua
  * @version 1.0
- * @date 19/11/2023 01:16
+ * @date 25/11/2023 16:24
  */
 @Data
-public class Role implements Serializable {
+public class DictData implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -50826044604873094L;
+    private static final long serialVersionUID = -3355436418062495569L;
 
     /**
-     * id
+     * 主键
      */
     private Long id;
 
     /**
-     * 名称
+     * 字典类型id
+     */
+    private Long typeId;
+
+    /**
+     * 字典名称
      */
     private String name;
 
     /**
-     * 权限标识
+     * 编码
      */
-    private String roleKey;
+    private String value;
 
     /**
-     * 状态
+     * 排序
      */
-    private Integer state;
+    private Integer sort;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
+    /**
+     * 状态（0停用 1正常）
+     */
+    private Boolean state;
 
     /**
      * 创建时间

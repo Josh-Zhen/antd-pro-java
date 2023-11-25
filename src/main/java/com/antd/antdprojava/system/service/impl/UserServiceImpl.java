@@ -12,7 +12,7 @@ import com.antd.antdprojava.common.security.SecurityUtils;
 import com.antd.antdprojava.common.security.entity.TokenInfo;
 import com.antd.antdprojava.common.security.entity.UserInfo;
 import com.antd.antdprojava.common.security.enums.AuthExceptionEnum;
-import com.antd.antdprojava.system.constant.BusinessConstant;
+import com.antd.antdprojava.system.constant.SystemBusinessConstant;
 import com.antd.antdprojava.system.entity.User;
 import com.antd.antdprojava.system.entity.UserRole;
 import com.antd.antdprojava.system.entity.dto.RegisterDTO;
@@ -70,9 +70,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 从创建token
         String username = user.getUsername();
         Long userId = user.getId();
-        String jwtToken = JwtTokenService.createToken(new TokenInfo(userId, username));
+        String jwtToken = JwtTokenService.createToken(new TokenInfo(userId, username, user.getRoles()));
         // 缓存到redis
-        redisService.setCacheObject(BusinessConstant.USER_CACHE + username, user);
+        redisService.setCacheObject(SystemBusinessConstant.USER_CACHE + username, user);
         return new UserInfoToken(userId, jwtToken);
     }
 
@@ -85,7 +85,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Boolean logout() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserInfo userInfo = (UserInfo) authentication.getPrincipal();
-        redisService.deleteObject(BusinessConstant.USER_CACHE + userInfo.getUsername());
+        redisService.deleteObject(SystemBusinessConstant.USER_CACHE + userInfo.getUsername());
         return true;
     }
 

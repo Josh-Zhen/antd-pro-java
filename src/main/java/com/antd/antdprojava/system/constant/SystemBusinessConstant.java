@@ -1,13 +1,13 @@
 package com.antd.antdprojava.system.constant;
 
 /**
- * 业务常量
+ * 系统业务常量
  *
  * @author Joshua
  * @version 1.0
  * @date 24/11/2023 22:03
  */
-public class BusinessConstant {
+public class SystemBusinessConstant {
 
     public static final String USER_CACHE = "userCache: ";
 

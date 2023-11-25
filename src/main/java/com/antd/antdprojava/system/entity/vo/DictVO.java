@@ -8,28 +8,28 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 用戶token信息实体类
+ * 字典实体类
  *
  * @author Joshua
  * @version 1.0
- * @date 18/11/2023 21:37
+ * @date 25/11/2023 16:30
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfoToken implements Serializable {
+public class DictVO implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -1248012255701212382L;
+    private static final long serialVersionUID = -1251015257102741241L;
 
     /**
-     * id
+     * 鍵值
      */
-    private Long id;
+    private String key;
 
     /**
-     * token
+     * 名稱
      */
-    private String token;
+    private String name;
 
 }

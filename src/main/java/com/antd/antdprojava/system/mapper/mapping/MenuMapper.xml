@@ -3,23 +3,33 @@
 <mapper namespace="com.antd.antdprojava.system.mapper.MenuMapper">
 
     <select id="tree" resultType="com.antd.antdprojava.system.entity.vo.MenuDataVO">
-        SELECT id,
-               name,
-               title,
-               icon,
-               component,
-               path,
-               redirect,
-               affix,
-               parent_id,
-               hide_in_menu,
-               parent_keys,
-               url,
-               hide_in_breadcrumb,
-               hide_children_in_menu,
-               keep_alive,
-               target
-        FROM menu
-        ORDER BY order_num
+        SELECT DISTINCT
+        m.id,
+        m.`NAME`,
+        m.`title`,
+        m.`icon`,
+        m.`component`,
+        m.`path`,
+        m.`redirect`,
+        m.`affix`,
+        m.`parent_id`,
+        m.`order_num`,
+        m.`hide_in_menu`,
+        m.`parent_keys`,
+        m.`url`,
+        m.`hide_in_breadcrumb`,
+        m.`hide_children_in_menu`,
+        m.`keep_alive`,
+        m.`target`
+        FROM `role` r
+        LEFT JOIN `role_menu` rm ON r.id = rm.role_id
+        LEFT JOIN `menu` m ON rm.menu_id = m.id
+        <where>
+            r.`role_key` IN
+            <foreach collection="roles" item="role" open="(" separator="," close=")">
+                #{role}
+            </foreach>
+        </where>
+        ORDER BY m.`order_num`
     </select>
 </mapper>

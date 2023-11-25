@@ -6,7 +6,7 @@ import com.antd.antdprojava.common.exception.BusinessException;
 import com.antd.antdprojava.common.redis.RedisService;
 import com.antd.antdprojava.common.response.Result;
 import com.antd.antdprojava.common.security.enums.AuthExceptionEnum;
-import com.antd.antdprojava.system.constant.BusinessConstant;
+import com.antd.antdprojava.system.constant.SystemBusinessConstant;
 import com.antd.antdprojava.system.entity.dto.RegisterDTO;
 import com.antd.antdprojava.system.entity.dto.UserLoginDTO;
 import com.antd.antdprojava.system.entity.vo.UserInfoToken;
@@ -59,7 +59,7 @@ public class AuthenticationController {
      */
     @PostMapping("/register")
     public Result<Boolean> register(@RequestBody RegisterDTO dto) {
-        String key = BusinessConstant.REGISTER_CODE + dto.getUserName();
+        String key = SystemBusinessConstant.REGISTER_CODE + dto.getUserName();
         String code = redisService.getCacheObject(key);
         // 校验验证码
         if (ObjectUtil.isEmpty(code) || !dto.getCode().equals(code)) {
@@ -80,7 +80,7 @@ public class AuthenticationController {
     public Result<String> getCode(@PathVariable String number) {
         String code = RandomUtil.randomNumbers(6);
         log.info("---------- 验证码: {}", code);
-        redisService.setCacheObject(BusinessConstant.REGISTER_CODE + number, code);
+        redisService.setCacheObject(SystemBusinessConstant.REGISTER_CODE + number, code);
         return Result.success(code);
     }
 

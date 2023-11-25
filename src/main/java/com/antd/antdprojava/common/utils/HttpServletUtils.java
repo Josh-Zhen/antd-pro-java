@@ -1,7 +1,7 @@
 package com.antd.antdprojava.common.utils;
 
 import com.antd.antdprojava.common.exception.BusinessException;
-import com.antd.antdprojava.common.exception.enums.ErrorCodeEnum;
+import com.antd.antdprojava.common.exception.enums.SystemErrorEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -22,7 +22,7 @@ public class HttpServletUtils {
     public static HttpServletRequest getRequest() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (requestAttributes == null) {
-            throw new BusinessException(ErrorCodeEnum.OBJECT_EMPTY);
+            throw new BusinessException(SystemErrorEnum.OBJECT_EMPTY);
         } else {
             return requestAttributes.getRequest();
         }
@@ -34,7 +34,7 @@ public class HttpServletUtils {
     public static HttpServletResponse getResponse() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (requestAttributes == null) {
-            throw new BusinessException(ErrorCodeEnum.OBJECT_EMPTY);
+            throw new BusinessException(SystemErrorEnum.OBJECT_EMPTY);
         } else {
             return requestAttributes.getResponse();
         }

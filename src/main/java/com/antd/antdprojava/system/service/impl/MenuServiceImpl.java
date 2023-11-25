@@ -4,6 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import com.antd.antdprojava.common.page.PageFactory;
 import com.antd.antdprojava.common.page.PageResult;
+import com.antd.antdprojava.common.security.SecurityUtils;
 import com.antd.antdprojava.system.entity.Menu;
 import com.antd.antdprojava.system.entity.vo.MenuDataVO;
 import com.antd.antdprojava.system.mapper.MenuMapper;
@@ -27,13 +28,13 @@ import java.util.List;
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
 
     /**
-     * 获取菜单列表
+     * 根据权限获取菜单列表
      *
      * @return 菜单列表
      */
     @Override
     public List<MenuDataVO> tree() {
-        return baseMapper.tree();
+        return baseMapper.tree(SecurityUtils.me().getRoles());
     }
 
     /**

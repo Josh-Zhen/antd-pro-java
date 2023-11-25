@@ -7,7 +7,7 @@ import com.antd.antdprojava.common.response.Result;
 import com.antd.antdprojava.common.security.entity.TokenInfo;
 import com.antd.antdprojava.common.security.entity.UserInfo;
 import com.antd.antdprojava.common.security.enums.AuthExceptionEnum;
-import com.antd.antdprojava.system.constant.BusinessConstant;
+import com.antd.antdprojava.system.constant.SystemBusinessConstant;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         assert tokenInfo != null;
         // 从缓存中验证token的存在性
-        UserInfo user = redisService.getCacheObject(BusinessConstant.USER_CACHE + tokenInfo.getUserName());
+        UserInfo user = redisService.getCacheObject(SystemBusinessConstant.USER_CACHE + tokenInfo.getUserName());
         if (ObjectUtil.isEmpty(user)) {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setStatus(HttpStatus.OK.value());

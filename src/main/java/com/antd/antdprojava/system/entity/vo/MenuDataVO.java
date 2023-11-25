@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * 菜單響應數據實體
+ * 菜单数据实体类
  *
  * @author Joshua
  * @version 1.0

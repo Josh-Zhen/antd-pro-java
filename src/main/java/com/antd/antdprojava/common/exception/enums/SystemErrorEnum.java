@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 自定义异常枚举类
+ * 系统异常枚举类
  *
  * @author Joshua
  * @version 1.0
@@ -13,7 +13,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ErrorCodeEnum implements AbstractBaseExceptionEnum {
+public enum SystemErrorEnum implements AbstractBaseExceptionEnum {
 
     //系统示知错误
     DEFAULT_ERROR(-1, "系统未知错误"),

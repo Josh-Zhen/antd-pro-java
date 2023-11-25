@@ -14,8 +14,8 @@ import java.io.Serial;
  * @version 1.0
  * @date 18/11/2023 17:50
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class BusinessException extends RuntimeException {
 
     @Serial

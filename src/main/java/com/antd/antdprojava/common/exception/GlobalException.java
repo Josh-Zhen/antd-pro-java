@@ -1,6 +1,6 @@
 package com.antd.antdprojava.common.exception;
 
-import com.antd.antdprojava.common.exception.enums.ErrorCodeEnum;
+import com.antd.antdprojava.common.exception.enums.SystemErrorEnum;
 import com.antd.antdprojava.common.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.ConversionNotSupportedException;
@@ -41,10 +41,10 @@ public class GlobalException {
      */
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public Result<ErrorCodeEnum> exceptionHandler(Exception ex) {
+    public Result<SystemErrorEnum> exceptionHandler(Exception ex) {
         log.error("exceptionHandler: ", ex);
         String msg = specialExceptionResolve(ex) == null ? "哎呀，出问题啦" : specialExceptionResolve(ex);
-        return Result.fail(ErrorCodeEnum.DEFAULT_ERROR.getCode(), msg);
+        return Result.fail(SystemErrorEnum.DEFAULT_ERROR.getCode(), msg);
     }
 
     /**

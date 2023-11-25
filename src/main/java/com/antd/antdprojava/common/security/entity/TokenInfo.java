@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+
 /**
  * Token信息内容实体
  *
@@ -25,6 +27,11 @@ public class TokenInfo {
      * 用户帐户
      */
     private String userName;
+
+    /**
+     * 角色
+     */
+    private ArrayList<String> roles;
 
 }
 

@@ -25,7 +25,7 @@ public class MenuController {
     private final MenuService menuService;
 
     /**
-     * 获取菜单列表
+     * 根据权限获取菜单列表
      *
      * @return 菜单列表
      */
@@ -88,4 +88,5 @@ public class MenuController {
     public Result<Boolean> delete(String ids) {
         return Result.success(menuService.deleteMenuByIds(ids));
     }
+
 }

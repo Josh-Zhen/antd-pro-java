@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 角色菜单中间实体
+ * 角色菜单中间表实体类
  *
  * @author Joshua
  * @version 1.0

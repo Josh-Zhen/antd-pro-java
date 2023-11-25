@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
- * 菜单实体
+ * 菜单实体类
  *
  * @author Joshua
  * @version 1.0

@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 用户角色中间实体
+ * 用户角色中间表实体类
  *
  * @author Joshua
  * @version 1.0
