@@ -96,7 +96,7 @@ public class Menu implements Serializable {
     private Boolean hideInBreadcrumb;
 
     /**
-     * 是否显示所有子菜单(0:否[def]，1:是)
+     * 是否隐藏所有子菜单(0:否[def]，1:是)
      */
     private Boolean hideChildrenInMenu;
 

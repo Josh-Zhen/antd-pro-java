@@ -101,7 +101,7 @@ CREATE TABLE `menu`
     `parent_keys`           varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '如果使用了隐藏，那么点击当前菜单时，可以使用父级的key',
     `url`                   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci         NULL COMMENT '超链接',
     `hide_in_breadcrumb`    tinyint(1) UNSIGNED                                           NOT NULL DEFAULT 0 COMMENT '是否存在面包屑(0:否，1:是)',
-    `hide_children_in_menu` tinyint(1) UNSIGNED                                           NOT NULL DEFAULT 0 COMMENT '是否显示所有子菜单(0:否，1:是)',
+    `hide_children_in_menu` tinyint(1) UNSIGNED                                           NOT NULL DEFAULT 0 COMMENT '是否隐藏所有子菜单(0:否，1:是)',
     `keep_alive`            tinyint(1) UNSIGNED                                           NOT NULL DEFAULT 0 COMMENT '是否保活(0:否，1：是)',
     `target`                varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci   NULL     DEFAULT NULL COMMENT '全连接跳转模式(\'_blank\' | \'_self\' | \'_parent\')',
     `remark`                varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '备注',
@@ -119,7 +119,7 @@ CREATE TABLE `menu`
 -- ----------------------------
 INSERT INTO `menu`
 VALUES (1, 'Dashboard', '仪表盘', 'DashboardOutlined', 'RouteView', '/dashboard', '/dashboard/analysis', 0, 0, 0, 0, NULL,
-        NULL, 0, 1, 0, NULL, NULL, NOW(), NULL);
+        NULL, 0, 0, 0, NULL, NULL, NOW(), NULL);
 INSERT INTO `menu`
 VALUES (2, 'DashboardAnalysis', '分析页', NULL, '/dashboard/analysis', '/dashboard/analysis', NULL, 99, 0, 1, 0, NULL,
         NULL, 0, 0, 1, NULL, NULL, NOW(), NULL);
